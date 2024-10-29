@@ -46,6 +46,13 @@
             this.sfdSaveDB = new System.Windows.Forms.SaveFileDialog();
             this.butSaveDB = new System.Windows.Forms.Button();
             this.ofdOpenDB = new System.Windows.Forms.OpenFileDialog();
+            this.butJoinTables = new System.Windows.Forms.Button();
+            this.tbTable1 = new System.Windows.Forms.TextBox();
+            this.tbTable2 = new System.Windows.Forms.TextBox();
+            this.tbCommonField = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -202,11 +209,76 @@
             this.butSaveDB.UseVisualStyleBackColor = true;
             this.butSaveDB.Click += new System.EventHandler(this.butSaveDB_Click);
             // 
+            // butJoinTables
+            // 
+            this.butJoinTables.Location = new System.Drawing.Point(530, 103);
+            this.butJoinTables.Name = "butJoinTables";
+            this.butJoinTables.Size = new System.Drawing.Size(75, 23);
+            this.butJoinTables.TabIndex = 18;
+            this.butJoinTables.Text = "Join Tables";
+            this.butJoinTables.UseVisualStyleBackColor = true;
+            this.butJoinTables.Click += new System.EventHandler(this.butJoinTables_Click);
+            // 
+            // tbTable1
+            // 
+            this.tbTable1.Location = new System.Drawing.Point(686, 80);
+            this.tbTable1.Name = "tbTable1";
+            this.tbTable1.Size = new System.Drawing.Size(100, 20);
+            this.tbTable1.TabIndex = 19;
+            // 
+            // tbTable2
+            // 
+            this.tbTable2.Location = new System.Drawing.Point(686, 105);
+            this.tbTable2.Name = "tbTable2";
+            this.tbTable2.Size = new System.Drawing.Size(100, 20);
+            this.tbTable2.TabIndex = 20;
+            // 
+            // tbCommonField
+            // 
+            this.tbCommonField.Location = new System.Drawing.Point(686, 130);
+            this.tbCommonField.Name = "tbCommonField";
+            this.tbCommonField.Size = new System.Drawing.Size(100, 20);
+            this.tbCommonField.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(637, 83);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Table 1";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(637, 108);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.TabIndex = 23;
+            this.label2.Text = "Table 2";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(607, 133);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(73, 13);
+            this.label3.TabIndex = 24;
+            this.label3.Text = "Common Field";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 514);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.tbCommonField);
+            this.Controls.Add(this.tbTable2);
+            this.Controls.Add(this.tbTable1);
+            this.Controls.Add(this.butJoinTables);
             this.Controls.Add(this.butSaveDB);
             this.Controls.Add(this.butDeleteTable);
             this.Controls.Add(this.butDeleteRow);
@@ -250,6 +322,13 @@
         private System.Windows.Forms.SaveFileDialog sfdSaveDB;
         private System.Windows.Forms.Button butSaveDB;
         private System.Windows.Forms.OpenFileDialog ofdOpenDB;
+        private System.Windows.Forms.Button butJoinTables;
+        private System.Windows.Forms.TextBox tbTable1;
+        private System.Windows.Forms.TextBox tbTable2;
+        private System.Windows.Forms.TextBox tbCommonField;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 

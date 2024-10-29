@@ -36,8 +36,13 @@ namespace Lab1IT
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //int ind = tabControl.SelectedIndex;
+            //if (ind != -1) VisualTable(dbm.GetTable(ind));
             int ind = tabControl.SelectedIndex;
-            if (ind != -1) VisualTable(dbm.GetTable(ind));
+            if (ind >= 0 && ind < dbm.GetTableNameList().Count)  // Перевірка меж індексу
+            {
+                VisualTable(dbm.GetTable(ind));
+            }
         }
 
         void VisualTable(Table t)
@@ -190,5 +195,44 @@ namespace Lab1IT
             int ind = tabControl.SelectedIndex;
             if (ind != -1) VisualTable(dbm.GetTable(ind));
         }
+
+        private void butJoinTables_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string tableName1 = tbTable1.Text;
+                string tableName2 = tbTable2.Text;
+                string commonField = tbCommonField.Text;
+
+                if (string.IsNullOrEmpty(tableName1) || string.IsNullOrEmpty(tableName2) || string.IsNullOrEmpty(commonField))
+                {
+                    MessageBox.Show("Please enter both table names and the common field.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var joinedTable = dbm.JoinTables(tableName1, tableName2, commonField);
+                TabPage newTab = new TabPage(joinedTable.tName);
+                tabControl.TabPages.Add(newTab);
+
+                dataGridView.Rows.Clear();
+                dataGridView.Columns.Clear();
+
+                foreach (var column in joinedTable.tColumnsList)
+                {
+                    dataGridView.Columns.Add(column.cName, column.cName);
+                }
+
+                foreach (var row in joinedTable.tRowsList)
+                {
+                    dataGridView.Rows.Add(row.rValuesList.ToArray());
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
     }
 }

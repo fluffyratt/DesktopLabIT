@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Lab1IT
 {
@@ -27,7 +29,18 @@ namespace Lab1IT
 
         public Table GetTable(int index)
         {
-            if (index == -1) index = 0;
+            //if (index == -1) index = 0;
+            //return db.dbTablesList[index];
+            if (db.dbTablesList == null || db.dbTablesList.Count == 0)
+            {
+                throw new InvalidOperationException("The list of tables is empty.");
+            }
+
+            if (index < 0 || index >= db.dbTablesList.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range. Ensure the index is within the bounds of the table list.");
+            }
+
             return db.dbTablesList[index];
         }
 
@@ -65,7 +78,7 @@ namespace Lab1IT
                 db.dbTablesList[tind].tRowsList[rind].rValuesList[cind] = newValue;
                 return true;
             }
-
+            MessageBox.Show("Wrong input.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
         }
 
@@ -171,5 +184,40 @@ namespace Lab1IT
                 res.Add(t.tName);
             return res;
         }
+
+        public Table JoinTables(string tableName1, string tableName2, string commonField)
+        {
+            var table1 = db.dbTablesList.FirstOrDefault(t => t.tName == tableName1);
+            var table2 = db.dbTablesList.FirstOrDefault(t => t.tName == tableName2);
+
+            if (table1 == null || table2 == null)
+                throw new ArgumentException("One or both tables not found.");
+
+            var column1 = table1.tColumnsList.FirstOrDefault(c => c.cName == commonField);
+            var column2 = table2.tColumnsList.FirstOrDefault(c => c.cName == commonField);
+
+            if (column1 == null || column2 == null || column1.typeName != column2.typeName)
+                throw new ArgumentException("Common field not found in both tables or data types do not match.");
+
+            var joinedTable = new Table($"{table1.tName}_{table2.tName}_Joined");
+            joinedTable.tColumnsList.AddRange(table1.tColumnsList);
+            joinedTable.tColumnsList.AddRange(table2.tColumnsList.Where(c => c.cName != commonField));
+
+            foreach (var row1 in table1.tRowsList)
+            {
+                var commonValue = row1.rValuesList[table1.tColumnsList.IndexOf(column1)];
+                var matchingRows = table2.tRowsList.Where(row2 => row2.rValuesList[table2.tColumnsList.IndexOf(column2)] == commonValue);
+
+                foreach (var row2 in matchingRows)
+                {
+                    var newRow = new Row();
+                    newRow.rValuesList.AddRange(row1.rValuesList);
+                    newRow.rValuesList.AddRange(row2.rValuesList.Where((_, i) => table2.tColumnsList[i] != column2));
+                    joinedTable.tRowsList.Add(newRow);
+                }
+            }
+            return joinedTable;
+        }
+
     }
 }
