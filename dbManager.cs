@@ -23,82 +23,80 @@ namespace Lab1IT
             if (tname.Equals("")) return false;
             if (db == null) return false;
 
-            db.dbTablesList.Add(new Table(tname));
+            db.dbTablesDict.Add(tname, new Table(tname));
             return true;
         }
 
-        public Table GetTable(int index)
+        public Table GetTable(string tableName)
         {
-            //if (index == -1) index = 0;
-            //return db.dbTablesList[index];
-            if (db.dbTablesList == null || db.dbTablesList.Count == 0)
+            if (db.dbTablesDict == null || db.dbTablesDict.Count == 0)
             {
                 throw new InvalidOperationException("The list of tables is empty.");
             }
 
-            if (index < 0 || index >= db.dbTablesList.Count)
+            if (!db.dbTablesDict.TryGetValue(tableName, out Table table))
             {
-                throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range. Ensure the index is within the bounds of the table list.");
+                throw new ArgumentException(nameof(tableName), "Index is out of range. Ensure the index is within the bounds of the table list.");
             }
 
-            return db.dbTablesList[index];
+            return table;
         }
 
-        public bool AddColumn(int tIndex, string cname, string ctype)
+        public bool AddColumn(string tableName, string cname, string ctype)
         {
-            if (db == null) return false;
-            if (db.dbTablesList.Count <= 0) return false;
+            if (db == null || IsDBHasTable(tableName)) return false;
+            if (db.dbTablesDict.Count <= 0) return false;
 
-            db.dbTablesList[tIndex].tColumnsList.Add(new Column(cname, ctype));
-            for (int i = 0; i < db.dbTablesList[tIndex].tRowsList.Count; ++i)
+            db.dbTablesDict[tableName].tColumnsList.Add(new Column(cname, ctype));
+            for (int i = 0; i < db.dbTablesDict[tableName].tRowsList.Count; ++i)
             {
-                db.dbTablesList[tIndex].tRowsList[i].rValuesList.Add("");
-            }
-            return true;
-        }
-
-        public bool AddRow(int tIndex)
-        {
-            if (db == null) return false;
-            if (db.dbTablesList.Count <= 0) return false;
-            if (db.dbTablesList[tIndex].tColumnsList.Count <= 0) return false;
-
-            db.dbTablesList[tIndex].tRowsList.Add(new Row());
-            for (int i = 0; i < db.dbTablesList[tIndex].tColumnsList.Count; ++i)
-            {
-                db.dbTablesList[tIndex].tRowsList.Last().rValuesList.Add("");
+                db.dbTablesDict[tableName].tRowsList[i].rValuesList.Add("");
             }
             return true;
         }
 
-        public bool ChangeValue(string newValue, int tind, int cind, int rind)
+        public bool AddRow(string tableName)
         {
-            if (db.dbTablesList[tind].tColumnsList[cind].cType.Validation(newValue))
+            if (db == null || IsDBHasTable(tableName)) return false;
+            if (db.dbTablesDict.Count <= 0) return false;
+            if (db.dbTablesDict[tableName].tColumnsList.Count <= 0) return false;
+
+            db.dbTablesDict[tableName].tRowsList.Add(new Row());
+            for (int i = 0; i < db.dbTablesDict[tableName].tColumnsList.Count; ++i)
             {
-                db.dbTablesList[tind].tRowsList[rind].rValuesList[cind] = newValue;
+                db.dbTablesDict[tableName].tRowsList.Last().rValuesList.Add("");
+            }
+            return true;
+        }
+
+        public bool ChangeValue(string newValue, string tableName, int cind, int rind)
+        {
+            if (db.dbTablesDict[tableName].tColumnsList[cind].cType.Validation(newValue))
+            {
+                db.dbTablesDict[tableName].tRowsList[rind].rValuesList[cind] = newValue;
                 return true;
             }
             MessageBox.Show("Wrong input.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
         }
 
-        public void DeleteRow(int tind, int rind)
+        public void DeleteRow(string tableName, int rind)
         {
-            db.dbTablesList[tind].tRowsList.RemoveAt(rind);
+            db.dbTablesDict[tableName].tRowsList.RemoveAt(rind);
         }
 
-        public void DeleteColumn(int tind, int cind)
+        public void DeleteColumn(string tableName, int cind)
         {
-            db.dbTablesList[tind].tColumnsList.RemoveAt(cind);
-            for (int i = 0; i < db.dbTablesList[tind].tRowsList.Count; ++i)
+            db.dbTablesDict[tableName].tColumnsList.RemoveAt(cind);
+            for (int i = 0; i < db.dbTablesDict[tableName].tRowsList.Count; ++i)
             {
-                db.dbTablesList[tind].tRowsList[i].rValuesList.RemoveAt(cind);
+                db.dbTablesDict[tableName].tRowsList[i].rValuesList.RemoveAt(cind);
             }
         }
 
-        public void DeleteTable(int tind)
+        public void DeleteTable(string tableName)
         {
-            db.dbTablesList.RemoveAt(tind);
+            db.dbTablesDict.Remove(tableName);
         }
 
         char sep = '$';
@@ -108,7 +106,8 @@ namespace Lab1IT
             StreamWriter sw = new StreamWriter(path);
 
             sw.WriteLine(db.dbName);
-            foreach (Table t in db.dbTablesList)
+            var tablesList = db.dbTablesDict.Values.ToList();
+            foreach (Table t in tablesList)
             {
                 sw.WriteLine(sep);
                 sw.WriteLine(t.tName);
@@ -149,10 +148,11 @@ namespace Lab1IT
                 List<string> buf = parts[i].Split('\r').ToList();
                 buf.RemoveAt(0);
                 buf.RemoveAt(buf.Count - 1);
-
+                string tableName = null;
                 if (buf.Count > 0)
                 {
-                    db.dbTablesList.Add(new Table(buf[0]));
+                    tableName = buf[0];
+                    db.dbTablesDict.Add(tableName, new Table(tableName));
                 }
                 if (buf.Count > 2)
                 {
@@ -161,15 +161,15 @@ namespace Lab1IT
                     int length = cname.Length - 1;
                     for (int j = 0; j < length; ++j)
                     {
-                        db.dbTablesList[i - 1].tColumnsList.Add(new Column(cname[j], ctype[j]));
+                        db.dbTablesDict[tableName].tColumnsList.Add(new Column(cname[j], ctype[j]));
                     }
 
                     for (int j = 3; j < buf.Count; ++j)
                     {
-                        db.dbTablesList[i - 1].tRowsList.Add(new Row());
+                        db.dbTablesDict[tableName].tRowsList.Add(new Row());
                         List<string> values = buf[j].Split(space).ToList();
                         values.RemoveAt(values.Count - 1);
-                        db.dbTablesList[i - 1].tRowsList.Last().rValuesList.AddRange(values);
+                        db.dbTablesDict[tableName].tRowsList.Last().rValuesList.AddRange(values);
                     }
                 }
             }
@@ -179,45 +179,65 @@ namespace Lab1IT
 
         public List<string> GetTableNameList()
         {
-            List<string> res = new List<string>();
-            foreach (Table t in db.dbTablesList)
-                res.Add(t.tName);
-            return res;
+            return db.dbTablesDict.Keys.ToList();
         }
 
-        public Table JoinTables(string tableName1, string tableName2, string commonField)
+        public bool IsDBHasTable(string tableName)
         {
-            var table1 = db.dbTablesList.FirstOrDefault(t => t.tName == tableName1);
-            var table2 = db.dbTablesList.FirstOrDefault(t => t.tName == tableName2);
+            return db.dbTablesDict.ContainsKey(tableName);
+        }
 
-            if (table1 == null || table2 == null)
-                throw new ArgumentException("One or both tables not found.");
-
-            var column1 = table1.tColumnsList.FirstOrDefault(c => c.cName == commonField);
-            var column2 = table2.tColumnsList.FirstOrDefault(c => c.cName == commonField);
-
-            if (column1 == null || column2 == null || column1.typeName != column2.typeName)
-                throw new ArgumentException("Common field not found in both tables or data types do not match.");
-
-            var joinedTable = new Table($"{table1.tName}_{table2.tName}_Joined");
-            joinedTable.tColumnsList.AddRange(table1.tColumnsList);
-            joinedTable.tColumnsList.AddRange(table2.tColumnsList.Where(c => c.cName != commonField));
-
-            foreach (var row1 in table1.tRowsList)
+        public Table UnionTables(string tableName1, string tableName2, bool distinct = false)
+        {
+            if (!db.dbTablesDict.TryGetValue(tableName1, out var table1) ||
+                !db.dbTablesDict.TryGetValue(tableName2, out var table2))
             {
-                var commonValue = row1.rValuesList[table1.tColumnsList.IndexOf(column1)];
-                var matchingRows = table2.tRowsList.Where(row2 => row2.rValuesList[table2.tColumnsList.IndexOf(column2)] == commonValue);
+                throw new ArgumentException("One or both tables not found.");
+            }
 
-                foreach (var row2 in matchingRows)
+            if (table1.tColumnsList.Count != table2.tColumnsList.Count)
+                throw new ArgumentException("Tables have different number of columns.");
+
+            for (int i = 0; i < table1.tColumnsList.Count; i++)
+            {
+                var c1 = table1.tColumnsList[i];
+                var c2 = table2.tColumnsList[i];
+
+                if (!string.Equals(c1.cName, c2.cName, StringComparison.Ordinal))
+                    throw new ArgumentException($"Column name mismatch at position {i}: '{c1.cName}' vs '{c2.cName}'.");
+
+                if (!string.Equals(c1.typeName, c2.typeName, StringComparison.Ordinal))
+                    throw new ArgumentException($"Column type mismatch for '{c1.cName}': '{c1.typeName}' vs '{c2.typeName}'.");
+            }
+
+            var distinctText = distinct ? "_distinct" : "";
+            var result = new Table($"{table1.tName}_{table2.tName}_Union{distinctText}");
+            result.tColumnsList.AddRange(table1.tColumnsList);
+
+            HashSet<string> seen = new HashSet<string>();
+            void AddRowIfNeeded(Row src)
+            {
+                if (src.rValuesList.Count != result.tColumnsList.Count)
+                    throw new ArgumentException("Row has different number of values than columns.");
+
+                var key = GetRowKey(src);
+                if (!distinct || seen.Add(key))
                 {
-                    var newRow = new Row();
-                    newRow.rValuesList.AddRange(row1.rValuesList);
-                    newRow.rValuesList.AddRange(row2.rValuesList.Where((_, i) => table2.tColumnsList[i] != column2));
-                    joinedTable.tRowsList.Add(newRow);
+                    var copy = new Row();
+                    copy.rValuesList.AddRange(src.rValuesList);
+                    result.tRowsList.Add(copy);
                 }
             }
-            return joinedTable;
+
+            foreach (var r in table1.tRowsList) AddRowIfNeeded(r);
+            foreach (var r in table2.tRowsList) AddRowIfNeeded(r);
+
+            return result;
         }
 
+        private string GetRowKey(Row r)
+        {
+            return string.Join("\u001F", r.rValuesList.Select(v => v ?? string.Empty));
+        }
     }
 }

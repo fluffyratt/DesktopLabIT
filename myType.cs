@@ -4,7 +4,7 @@ namespace Lab1IT
 {
     class myType
     {
-        private List<string> EnableTypes = new List<string> { "Integer", "Real", "Char", "String", "Date", "DateInvl" };
+        private List<string> EnableTypes = new List<string> { "Integer", "Real", "Char", "String", "Time", "TimeInvl" };
         string curType;
 
         public myType(string type)

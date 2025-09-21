@@ -51,11 +51,11 @@
     <Compile Include="Column.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="dbTypeChar.cs" />
-    <Compile Include="dbTypeDate.cs" />
-    <Compile Include="dbTypeDateInvl.cs" />
     <Compile Include="dbTypeInteger.cs" />
     <Compile Include="dbTypeReal.cs" />
     <Compile Include="dbTypeString.cs" />
+    <Compile Include="dbTypeTime.cs" />
+    <Compile Include="dbTypeTimeInvl.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Lab1IT
@@ -12,10 +10,19 @@ namespace Lab1IT
         dbManager dbm = new dbManager();
         string cellOldValue = "";
         string cellNewValue = "";
+        Dictionary<string, Table> temporaryTables = new Dictionary<string, Table>();
+
         public Form1()
         {
             InitializeComponent();
             cbTypes.SelectedIndex = 0;
+        }
+        private string SelectedTabText
+        {
+            get
+            {
+                return tabControl.SelectedTab?.Text ?? string.Empty;
+            }
         }
 
         private void butCreate_Click(object sender, EventArgs e)
@@ -24,6 +31,7 @@ namespace Lab1IT
             tabControl.TabPages.Clear();
             dataGridView.Rows.Clear();
             dataGridView.Columns.Clear();
+            temporaryTables.Clear();
         }
 
         private void butAddTable_Click(object sender, EventArgs e)
@@ -36,16 +44,10 @@ namespace Lab1IT
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //int ind = tabControl.SelectedIndex;
-            //if (ind != -1) VisualTable(dbm.GetTable(ind));
-            int ind = tabControl.SelectedIndex;
-            if (ind >= 0 && ind < dbm.GetTableNameList().Count)  // Перевірка меж індексу
-            {
-                VisualTable(dbm.GetTable(ind));
-            }
+            this.ShowSelectedTable();
         }
 
-        void VisualTable(Table t)
+        void VisualTable(Table t, bool allowEdit)
         {
             try
             {
@@ -54,9 +56,12 @@ namespace Lab1IT
 
                 foreach (Column c in t.tColumnsList)
                 {
-                    DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
-                    column.Name = c.cName;
-                    column.HeaderText = c.cName;
+                    DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn
+                    {
+                        Name = c.cName,
+                        HeaderText = c.cName,
+                        ReadOnly = !allowEdit
+                    };
                     dataGridView.Columns.Add(column);
                 }
 
@@ -68,34 +73,43 @@ namespace Lab1IT
                         DataGridViewCell cell = new DataGridViewTextBoxCell();
                         cell.Value = s;
                         row.Cells.Add(cell);
+                        cell.ReadOnly = !allowEdit;
                     }
                     try
                     {
                         dataGridView.Rows.Add(row);
                     }
-                    catch { }
+                    catch (Exception e) {
+                        Console.WriteLine(e.Message);
+                    }
                 }
+
+                dataGridView.ReadOnly = !allowEdit;
+                dataGridView.AllowUserToAddRows = false;
+                dataGridView.AllowUserToDeleteRows = false;
+                dataGridView.EditMode = allowEdit
+                    ? DataGridViewEditMode.EditOnKeystrokeOrF2
+                    : DataGridViewEditMode.EditProgrammatically;
             }
             catch { }
         }
 
         private void butAddColumn_Click(object sender, EventArgs e)
         {
-            if (dbm.AddColumn(tabControl.SelectedIndex, tbAddColumnName.Text, cbTypes.Text))
-            {
+            var columnName = tbAddColumnName.Text.Trim();
+            if (String.IsNullOrEmpty(columnName)) return;
 
-                int ind = tabControl.SelectedIndex;
-                if (ind != -1) VisualTable(dbm.GetTable(ind));
+            if (dbm.AddColumn(SelectedTabText, columnName, cbTypes.Text))
+            {
+                this.ShowSelectedTable();
             }
         }
 
         private void butAddRow_Click(object sender, EventArgs e)
         {
-            if (dbm.AddRow(tabControl.SelectedIndex))
+            if (dbm.AddRow(SelectedTabText))
             {
-
-                int ind = tabControl.SelectedIndex;
-                if (ind != -1) VisualTable(dbm.GetTable(ind));
+                this.ShowSelectedTable();
             }
         }
 
@@ -107,13 +121,12 @@ namespace Lab1IT
         private void dataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             cellNewValue = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-            if (!dbm.ChangeValue(cellNewValue, tabControl.SelectedIndex, e.ColumnIndex, e.RowIndex))
+            if (!dbm.ChangeValue(cellNewValue, SelectedTabText, e.ColumnIndex, e.RowIndex))
             {
                 dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = cellOldValue;
             }
 
-            int ind = tabControl.SelectedIndex;
-            if (ind != -1) VisualTable(dbm.GetTable(ind));
+            this.ShowSelectedTable();
         }
 
         private void butDeleteRow_Click(object sender, EventArgs e)
@@ -121,25 +134,23 @@ namespace Lab1IT
             if (dataGridView.Rows.Count == 0) return;
             try
             {
-                dbm.DeleteRow(tabControl.SelectedIndex, dataGridView.CurrentCell.RowIndex);
+                dbm.DeleteRow(SelectedTabText, dataGridView.CurrentCell.RowIndex);
             }
             catch { }
 
-            int ind = tabControl.SelectedIndex;
-            if (ind != -1) VisualTable(dbm.GetTable(ind));
+            this.ShowSelectedTable();
         }
 
         private void butDeleteColumn_Click(object sender, EventArgs e)
         {
-            if (dataGridView.Columns.Count == 0) return;
+            if (dataGridView.Columns.Count == 0 || dataGridView.CurrentCell == null || dbm.IsDBHasTable(SelectedTabText)) return;
             try
             {
-                dbm.DeleteColumn(tabControl.SelectedIndex, dataGridView.CurrentCell.ColumnIndex);
+                dbm.DeleteColumn(SelectedTabText, dataGridView.CurrentCell.ColumnIndex);
             }
             catch { }
 
-            int ind = tabControl.SelectedIndex;
-            if (ind != -1) VisualTable(dbm.GetTable(ind));
+            this.ShowSelectedTable();
         }
 
         private void butDeleteTable_Click(object sender, EventArgs e)
@@ -147,14 +158,22 @@ namespace Lab1IT
             if (tabControl.TabCount == 0) return;
             try
             {
-                dbm.DeleteTable(tabControl.SelectedIndex);
+                if (dbm.IsDBHasTable(SelectedTabText))  // Перевірка меж індексу
+                {
+                    VisualTable(dbm.GetTable(SelectedTabText), true);
+                    dbm.DeleteTable(SelectedTabText);
+                } 
+                else if (temporaryTables.ContainsKey(SelectedTabText))
+                {
+                    VisualTable(temporaryTables[SelectedTabText], false);
+                    temporaryTables.Remove(SelectedTabText);
+                }
                 tabControl.TabPages.RemoveAt(tabControl.SelectedIndex);
             }
             catch { }
             if (tabControl.TabCount == 0) return;
 
-            int ind = tabControl.SelectedIndex;
-            if (ind != -1) VisualTable(dbm.GetTable(ind));
+            this.ShowSelectedTable();
         }
 
         private void butSaveDB_Click(object sender, EventArgs e)
@@ -164,6 +183,7 @@ namespace Lab1IT
             sfdSaveDB.Filter = "tdb files (*.tdb)|*.tdb";
             sfdSaveDB.FilterIndex = 1;
             sfdSaveDB.RestoreDirectory = true;
+            sfdSaveDB.FileName = tbCreateDBName.Text;
 
             if (sfdSaveDB.ShowDialog() == DialogResult.OK)
             {
@@ -184,7 +204,12 @@ namespace Lab1IT
 
             if (ofdChooseFilePath.ShowDialog() == DialogResult.OK)
             {
+                temporaryTables.Clear();
                 dbm.OpenDB(ofdChooseFilePath.FileName);
+            }
+            else
+            {
+                return;
             }
 
             tabControl.TabPages.Clear();
@@ -192,47 +217,66 @@ namespace Lab1IT
             foreach (string s in buf)
                 tabControl.TabPages.Add(s);
 
-            int ind = tabControl.SelectedIndex;
-            if (ind != -1) VisualTable(dbm.GetTable(ind));
+            this.ShowSelectedTable();
         }
 
-        private void butJoinTables_Click(object sender, EventArgs e)
+        private void unionTables_Click(object sender, EventArgs e)
+        {
+            this.UnionTables(false);
+        }
+
+        private void distinctUnionTables_Click(object sender, EventArgs e)
+        {
+            this.UnionTables(true);
+        }
+
+        private void UnionTables(bool distinct)
         {
             try
             {
                 string tableName1 = tbTable1.Text;
                 string tableName2 = tbTable2.Text;
-                string commonField = tbCommonField.Text;
 
-                if (string.IsNullOrEmpty(tableName1) || string.IsNullOrEmpty(tableName2) || string.IsNullOrEmpty(commonField))
+                if (string.IsNullOrEmpty(tableName1) || string.IsNullOrEmpty(tableName2))
                 {
-                    MessageBox.Show("Please enter both table names and the common field.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please enter both table names.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                var joinedTable = dbm.JoinTables(tableName1, tableName2, commonField);
-                TabPage newTab = new TabPage(joinedTable.tName);
+                var unionTable = dbm.UnionTables(tableName1, tableName2, distinct);
+                unionTable.tName = this.GetTemporaryTableName(unionTable.tName);
+
+                TabPage newTab = new TabPage(unionTable.tName);
                 tabControl.TabPages.Add(newTab);
-
-                dataGridView.Rows.Clear();
-                dataGridView.Columns.Clear();
-
-                foreach (var column in joinedTable.tColumnsList)
-                {
-                    dataGridView.Columns.Add(column.cName, column.cName);
-                }
-
-                foreach (var row in joinedTable.tRowsList)
-                {
-                    dataGridView.Rows.Add(row.rValuesList.ToArray());
-                }
-                
+                temporaryTables.Add(unionTable.tName, unionTable);
+                tabControl.SelectTab(tabControl.TabPages.Count - 1);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
+        private string GetTemporaryTableName(string tableName)
+        {
+            int index = 1;
+            string newTableName = tableName;
+            while (temporaryTables.ContainsKey(newTableName))
+            {
+                newTableName = tableName + index;
+            }
+
+            return newTableName;
+        }
+
+        private void ShowSelectedTable()
+        {
+            if (tabControl.SelectedIndex == -1) return;
+
+            if (dbm.IsDBHasTable(SelectedTabText))
+                VisualTable(dbm.GetTable(SelectedTabText), true);
+            else
+                VisualTable(temporaryTables[SelectedTabText], false);
+        }
     }
 }

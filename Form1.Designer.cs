@@ -46,13 +46,12 @@
             this.sfdSaveDB = new System.Windows.Forms.SaveFileDialog();
             this.butSaveDB = new System.Windows.Forms.Button();
             this.ofdOpenDB = new System.Windows.Forms.OpenFileDialog();
-            this.butJoinTables = new System.Windows.Forms.Button();
             this.tbTable1 = new System.Windows.Forms.TextBox();
             this.tbTable2 = new System.Windows.Forms.TextBox();
-            this.tbCommonField = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.unionTables = new System.Windows.Forms.Button();
+            this.distinctUnionTables = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,18 +59,20 @@
             // 
             this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl.Location = new System.Drawing.Point(12, 156);
+            this.tabControl.Location = new System.Drawing.Point(16, 192);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(776, 24);
+            this.tabControl.Size = new System.Drawing.Size(1035, 30);
             this.tabControl.TabIndex = 0;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
             // butOpen
             // 
-            this.butOpen.Location = new System.Drawing.Point(13, 13);
+            this.butOpen.Location = new System.Drawing.Point(17, 16);
+            this.butOpen.Margin = new System.Windows.Forms.Padding(4);
             this.butOpen.Name = "butOpen";
-            this.butOpen.Size = new System.Drawing.Size(75, 23);
+            this.butOpen.Size = new System.Drawing.Size(100, 28);
             this.butOpen.TabIndex = 1;
             this.butOpen.Text = "Open DB";
             this.butOpen.UseVisualStyleBackColor = true;
@@ -79,9 +80,10 @@
             // 
             // butCreate
             // 
-            this.butCreate.Location = new System.Drawing.Point(94, 12);
+            this.butCreate.Location = new System.Drawing.Point(125, 15);
+            this.butCreate.Margin = new System.Windows.Forms.Padding(4);
             this.butCreate.Name = "butCreate";
-            this.butCreate.Size = new System.Drawing.Size(75, 23);
+            this.butCreate.Size = new System.Drawing.Size(100, 28);
             this.butCreate.TabIndex = 2;
             this.butCreate.Text = "New DB";
             this.butCreate.UseVisualStyleBackColor = true;
@@ -89,9 +91,10 @@
             // 
             // butAddColumn
             // 
-            this.butAddColumn.Location = new System.Drawing.Point(384, 12);
+            this.butAddColumn.Location = new System.Drawing.Point(512, 15);
+            this.butAddColumn.Margin = new System.Windows.Forms.Padding(4);
             this.butAddColumn.Name = "butAddColumn";
-            this.butAddColumn.Size = new System.Drawing.Size(75, 23);
+            this.butAddColumn.Size = new System.Drawing.Size(100, 28);
             this.butAddColumn.TabIndex = 3;
             this.butAddColumn.Text = "Add Column";
             this.butAddColumn.UseVisualStyleBackColor = true;
@@ -99,9 +102,10 @@
             // 
             // butAddRow
             // 
-            this.butAddRow.Location = new System.Drawing.Point(713, 12);
+            this.butAddRow.Location = new System.Drawing.Point(951, 15);
+            this.butAddRow.Margin = new System.Windows.Forms.Padding(4);
             this.butAddRow.Name = "butAddRow";
-            this.butAddRow.Size = new System.Drawing.Size(75, 23);
+            this.butAddRow.Size = new System.Drawing.Size(100, 28);
             this.butAddRow.TabIndex = 4;
             this.butAddRow.Text = "Add Row";
             this.butAddRow.UseVisualStyleBackColor = true;
@@ -109,16 +113,18 @@
             // 
             // tbCreateDBName
             // 
-            this.tbCreateDBName.Location = new System.Drawing.Point(94, 41);
+            this.tbCreateDBName.Location = new System.Drawing.Point(125, 50);
+            this.tbCreateDBName.Margin = new System.Windows.Forms.Padding(4);
             this.tbCreateDBName.Name = "tbCreateDBName";
-            this.tbCreateDBName.Size = new System.Drawing.Size(100, 20);
+            this.tbCreateDBName.Size = new System.Drawing.Size(132, 22);
             this.tbCreateDBName.TabIndex = 5;
             // 
             // butAddTable
             // 
-            this.butAddTable.Location = new System.Drawing.Point(232, 12);
+            this.butAddTable.Location = new System.Drawing.Point(309, 15);
+            this.butAddTable.Margin = new System.Windows.Forms.Padding(4);
             this.butAddTable.Name = "butAddTable";
-            this.butAddTable.Size = new System.Drawing.Size(75, 23);
+            this.butAddTable.Size = new System.Drawing.Size(100, 28);
             this.butAddTable.TabIndex = 6;
             this.butAddTable.Text = "Add Table";
             this.butAddTable.UseVisualStyleBackColor = true;
@@ -126,9 +132,10 @@
             // 
             // tbAddTableName
             // 
-            this.tbAddTableName.Location = new System.Drawing.Point(232, 41);
+            this.tbAddTableName.Location = new System.Drawing.Point(309, 50);
+            this.tbAddTableName.Margin = new System.Windows.Forms.Padding(4);
             this.tbAddTableName.Name = "tbAddTableName";
-            this.tbAddTableName.Size = new System.Drawing.Size(100, 20);
+            this.tbAddTableName.Size = new System.Drawing.Size(132, 22);
             this.tbAddTableName.TabIndex = 7;
             // 
             // dataGridView
@@ -139,9 +146,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Location = new System.Drawing.Point(13, 186);
+            this.dataGridView.Location = new System.Drawing.Point(17, 229);
+            this.dataGridView.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(775, 316);
+            this.dataGridView.RowHeadersWidth = 51;
+            this.dataGridView.Size = new System.Drawing.Size(1033, 389);
             this.dataGridView.TabIndex = 8;
             this.dataGridView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
             this.dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellEndEdit);
@@ -155,25 +164,28 @@
             "Real",
             "Char",
             "String",
-            "Date",
-            "DateInvl"});
-            this.cbTypes.Location = new System.Drawing.Point(384, 67);
+            "Time",
+            "TimeInvl"});
+            this.cbTypes.Location = new System.Drawing.Point(512, 82);
+            this.cbTypes.Margin = new System.Windows.Forms.Padding(4);
             this.cbTypes.Name = "cbTypes";
-            this.cbTypes.Size = new System.Drawing.Size(121, 21);
+            this.cbTypes.Size = new System.Drawing.Size(160, 24);
             this.cbTypes.TabIndex = 10;
             // 
             // tbAddColumnName
             // 
-            this.tbAddColumnName.Location = new System.Drawing.Point(384, 41);
+            this.tbAddColumnName.Location = new System.Drawing.Point(512, 50);
+            this.tbAddColumnName.Margin = new System.Windows.Forms.Padding(4);
             this.tbAddColumnName.Name = "tbAddColumnName";
-            this.tbAddColumnName.Size = new System.Drawing.Size(121, 20);
+            this.tbAddColumnName.Size = new System.Drawing.Size(160, 22);
             this.tbAddColumnName.TabIndex = 11;
             // 
             // butDeleteColumn
             // 
-            this.butDeleteColumn.Location = new System.Drawing.Point(384, 94);
+            this.butDeleteColumn.Location = new System.Drawing.Point(512, 116);
+            this.butDeleteColumn.Margin = new System.Windows.Forms.Padding(4);
             this.butDeleteColumn.Name = "butDeleteColumn";
-            this.butDeleteColumn.Size = new System.Drawing.Size(95, 23);
+            this.butDeleteColumn.Size = new System.Drawing.Size(127, 28);
             this.butDeleteColumn.TabIndex = 14;
             this.butDeleteColumn.Text = "Delete Column";
             this.butDeleteColumn.UseVisualStyleBackColor = true;
@@ -181,9 +193,10 @@
             // 
             // butDeleteRow
             // 
-            this.butDeleteRow.Location = new System.Drawing.Point(713, 50);
+            this.butDeleteRow.Location = new System.Drawing.Point(951, 62);
+            this.butDeleteRow.Margin = new System.Windows.Forms.Padding(4);
             this.butDeleteRow.Name = "butDeleteRow";
-            this.butDeleteRow.Size = new System.Drawing.Size(75, 23);
+            this.butDeleteRow.Size = new System.Drawing.Size(100, 28);
             this.butDeleteRow.TabIndex = 15;
             this.butDeleteRow.Text = "Delete Row";
             this.butDeleteRow.UseVisualStyleBackColor = true;
@@ -191,9 +204,10 @@
             // 
             // butDeleteTable
             // 
-            this.butDeleteTable.Location = new System.Drawing.Point(232, 67);
+            this.butDeleteTable.Location = new System.Drawing.Point(309, 82);
+            this.butDeleteTable.Margin = new System.Windows.Forms.Padding(4);
             this.butDeleteTable.Name = "butDeleteTable";
-            this.butDeleteTable.Size = new System.Drawing.Size(97, 23);
+            this.butDeleteTable.Size = new System.Drawing.Size(129, 28);
             this.butDeleteTable.TabIndex = 16;
             this.butDeleteTable.Text = "Delete Table";
             this.butDeleteTable.UseVisualStyleBackColor = true;
@@ -201,84 +215,84 @@
             // 
             // butSaveDB
             // 
-            this.butSaveDB.Location = new System.Drawing.Point(12, 41);
+            this.butSaveDB.Location = new System.Drawing.Point(16, 50);
+            this.butSaveDB.Margin = new System.Windows.Forms.Padding(4);
             this.butSaveDB.Name = "butSaveDB";
-            this.butSaveDB.Size = new System.Drawing.Size(75, 23);
+            this.butSaveDB.Size = new System.Drawing.Size(100, 28);
             this.butSaveDB.TabIndex = 17;
             this.butSaveDB.Text = "Save DB";
             this.butSaveDB.UseVisualStyleBackColor = true;
             this.butSaveDB.Click += new System.EventHandler(this.butSaveDB_Click);
             // 
-            // butJoinTables
-            // 
-            this.butJoinTables.Location = new System.Drawing.Point(530, 103);
-            this.butJoinTables.Name = "butJoinTables";
-            this.butJoinTables.Size = new System.Drawing.Size(75, 23);
-            this.butJoinTables.TabIndex = 18;
-            this.butJoinTables.Text = "Join Tables";
-            this.butJoinTables.UseVisualStyleBackColor = true;
-            this.butJoinTables.Click += new System.EventHandler(this.butJoinTables_Click);
-            // 
             // tbTable1
             // 
-            this.tbTable1.Location = new System.Drawing.Point(686, 80);
+            this.tbTable1.Location = new System.Drawing.Point(915, 98);
+            this.tbTable1.Margin = new System.Windows.Forms.Padding(4);
             this.tbTable1.Name = "tbTable1";
-            this.tbTable1.Size = new System.Drawing.Size(100, 20);
+            this.tbTable1.Size = new System.Drawing.Size(132, 22);
             this.tbTable1.TabIndex = 19;
             // 
             // tbTable2
             // 
-            this.tbTable2.Location = new System.Drawing.Point(686, 105);
+            this.tbTable2.Location = new System.Drawing.Point(915, 129);
+            this.tbTable2.Margin = new System.Windows.Forms.Padding(4);
             this.tbTable2.Name = "tbTable2";
-            this.tbTable2.Size = new System.Drawing.Size(100, 20);
+            this.tbTable2.Size = new System.Drawing.Size(132, 22);
             this.tbTable2.TabIndex = 20;
-            // 
-            // tbCommonField
-            // 
-            this.tbCommonField.Location = new System.Drawing.Point(686, 130);
-            this.tbCommonField.Name = "tbCommonField";
-            this.tbCommonField.Size = new System.Drawing.Size(100, 20);
-            this.tbCommonField.TabIndex = 21;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(637, 83);
+            this.label1.Location = new System.Drawing.Point(849, 102);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.Size = new System.Drawing.Size(53, 16);
             this.label1.TabIndex = 22;
             this.label1.Text = "Table 1";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(637, 108);
+            this.label2.Location = new System.Drawing.Point(849, 133);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.Size = new System.Drawing.Size(53, 16);
             this.label2.TabIndex = 23;
             this.label2.Text = "Table 2";
             // 
-            // label3
+            // unionTables
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(607, 133);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 13);
-            this.label3.TabIndex = 24;
-            this.label3.Text = "Common Field";
+            this.unionTables.Location = new System.Drawing.Point(693, 95);
+            this.unionTables.Margin = new System.Windows.Forms.Padding(4);
+            this.unionTables.Name = "unionTables";
+            this.unionTables.Size = new System.Drawing.Size(148, 28);
+            this.unionTables.TabIndex = 24;
+            this.unionTables.Text = "Union Tables";
+            this.unionTables.UseVisualStyleBackColor = true;
+            this.unionTables.Click += new System.EventHandler(this.unionTables_Click);
+            // 
+            // distinctUnionTables
+            // 
+            this.distinctUnionTables.Location = new System.Drawing.Point(693, 126);
+            this.distinctUnionTables.Margin = new System.Windows.Forms.Padding(4);
+            this.distinctUnionTables.Name = "distinctUnionTables";
+            this.distinctUnionTables.Size = new System.Drawing.Size(148, 28);
+            this.distinctUnionTables.TabIndex = 25;
+            this.distinctUnionTables.Text = "Distinct Union Tables";
+            this.distinctUnionTables.UseVisualStyleBackColor = true;
+            this.distinctUnionTables.Click += new System.EventHandler(this.distinctUnionTables_Click);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 514);
-            this.Controls.Add(this.label3);
+            this.ClientSize = new System.Drawing.Size(1067, 633);
+            this.Controls.Add(this.distinctUnionTables);
+            this.Controls.Add(this.unionTables);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.tbCommonField);
             this.Controls.Add(this.tbTable2);
             this.Controls.Add(this.tbTable1);
-            this.Controls.Add(this.butJoinTables);
             this.Controls.Add(this.butSaveDB);
             this.Controls.Add(this.butDeleteTable);
             this.Controls.Add(this.butDeleteRow);
@@ -294,6 +308,7 @@
             this.Controls.Add(this.butCreate);
             this.Controls.Add(this.butOpen);
             this.Controls.Add(this.tabControl);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Lab1 IT";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
@@ -322,13 +337,12 @@
         private System.Windows.Forms.SaveFileDialog sfdSaveDB;
         private System.Windows.Forms.Button butSaveDB;
         private System.Windows.Forms.OpenFileDialog ofdOpenDB;
-        private System.Windows.Forms.Button butJoinTables;
         private System.Windows.Forms.TextBox tbTable1;
         private System.Windows.Forms.TextBox tbTable2;
-        private System.Windows.Forms.TextBox tbCommonField;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button unionTables;
+        private System.Windows.Forms.Button distinctUnionTables;
     }
 }
 

@@ -25,11 +25,11 @@
                 case "String":
                     cType = new dbTypeString();
                     break;
-                case "Date":
-                    cType = new dbTypeDate();
+                case "Time":
+                    cType = new dbTypeTime();
                     break;
-                case "DateInvl":
-                    cType = new dbTypeDateInvl();
+                case "TimeInvl":
+                    cType = new dbTypeTimeInvl();
                     break;
                 default:
                     cType = new dbTypeString();
