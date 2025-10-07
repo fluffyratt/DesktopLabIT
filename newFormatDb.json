@@ -1,0 +1,67 @@
+{
+  "format": "TinyDB",
+  "version": 1,
+  "dbName": "newFormatDb",
+  "tables": [
+    {
+      "name": "First",
+      "columns": [
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "surname",
+          "type": "String"
+        }
+      ],
+      "rows": [
+        {
+          "values": [
+            "Max",
+            "MaxSurname"
+          ]
+        },
+        {
+          "values": [
+            "Oleh",
+            "OlehSurname"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Second",
+      "columns": [
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "surname",
+          "type": "String"
+        }
+      ],
+      "rows": [
+        {
+          "values": [
+            "Max",
+            "MaxSurname"
+          ]
+        },
+        {
+          "values": [
+            "Alex",
+            "AlexSurname"
+          ]
+        },
+        {
+          "values": [
+            "Serhii",
+            "SerhiiSurname"
+          ]
+        }
+      ]
+    }
+  ]
+}
