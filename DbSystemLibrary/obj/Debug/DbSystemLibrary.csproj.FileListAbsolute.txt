@@ -26,3 +26,31 @@ C:\Users\m.dubovyk\Desktop\SomeProject\DbSystemLibrary\bin\Debug\System.Text.Jso
 C:\Users\m.dubovyk\Desktop\SomeProject\DbSystemLibrary\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\m.dubovyk\Desktop\SomeProject\DbSystemLibrary\bin\Debug\System.ValueTuple.xml
 C:\Users\m.dubovyk\Desktop\SomeProject\DbSystemLibrary\obj\Debug\DbSystem.DA90EBBD.Up2Date
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\DbSystemLibrary.dll.config
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\DbSystemLibrary.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\DbSystemLibrary.pdb
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Buffers.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.IO.Pipelines.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Memory.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Numerics.Vectors.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Text.Encodings.Web.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Text.Json.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.ValueTuple.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Buffers.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.IO.Pipelines.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Memory.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Numerics.Vectors.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Text.Encodings.Web.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Text.Json.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\bin\Debug\System.ValueTuple.xml
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\obj\Debug\DbSystemLibrary.csproj.AssemblyReference.cache
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\obj\Debug\DbSystemLibrary.csproj.CoreCompileInputs.cache
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\obj\Debug\DbSystem.DA90EBBD.Up2Date
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\obj\Debug\DbSystemLibrary.dll
+D:\Університет\4 курс\Інформаційні технології\Lab\DbSystemLibrary\obj\Debug\DbSystemLibrary.pdb
